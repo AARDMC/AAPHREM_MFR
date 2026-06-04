@@ -113,6 +113,21 @@
       from { transform: translateY(100%); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
     }
+
+    #debugConsole {
+      background: #1e293b;
+      color: #e2e8f0;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      padding: 10px;
+      border-radius: 8px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .debug-log { margin: 2px 0; }
+    .debug-error { color: #fca5a5; }
+    .debug-success { color: #86efac; }
+    .debug-info { color: #93c5fd; }
   </style>
 </head>
 <body class="p-4 sm:p-6 lg:p-8 flex flex-col gap-6 max-w-[1600px] mx-auto min-h-screen">
@@ -158,9 +173,9 @@
         <button id="exportBtn" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-white px-5 py-3 rounded-xl font-semibold transition-colors shadow-sm">
           <i class="fas fa-download"></i> <span class="hidden sm:inline">Export CSV</span>
         </button>
-        <a href="https://script.google.com/macros/s/AKfycbyJ00qQg9Pqq4PbweMw17N-P_2zbY24ODuDvdIitXVVodagcVgDJzXNKhU2W96H_2fj3A/exec" target="_blank" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white px-5 py-3 rounded-xl font-semibold transition-colors backdrop-blur-md">
-          <i class="fas fa-external-link-alt"></i> <span class="hidden sm:inline">DHIS2</span>
-        </a>
+        <button id="debugBtn" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-slate-700 hover:bg-slate-600 text-white px-5 py-3 rounded-xl font-semibold transition-colors shadow-sm">
+          <i class="fas fa-bug"></i> <span class="hidden sm:inline">Debug</span>
+        </button>
       </div>
       
       <div id="loading" class="hidden bg-blue-800/50 px-4 py-2 rounded-lg border border-blue-400/30 flex items-center gap-3">
@@ -169,6 +184,15 @@
       </div>
     </div>
   </header>
+
+  <!-- Debug Console -->
+  <div id="debugConsole" class="hidden">
+    <div class="flex justify-between items-center mb-2">
+      <span class="text-white font-bold">🔍 Debug Console</span>
+      <button id="clearDebugBtn" class="text-slate-400 hover:text-white text-xs">Clear</button>
+    </div>
+    <div id="debugLogs"></div>
+  </div>
 
   <section class="bg-gradient-to-br from-blue-50/80 to-slate-50 p-5 lg:p-6 rounded-2xl shadow-sm border border-blue-100/70">
     <div class="flex items-center gap-3 mb-5 border-b border-blue-200/50 pb-4">
@@ -302,12 +326,32 @@
   </div>
 
   <script>
-    // ⚠️ REPLACE THIS WITH YOUR DEPLOYMENT URL AFTER DEPLOYING github.gs
+    // ⚠️ REPLACE THIS WITH YOUR ACTUAL DEPLOYMENT URL
     const GAS_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbwGf_EtBjYJerEQRtIBby9KlSJcLFWR2i5OfkqoEw5B6wT8dtFJzPqe6HxttlaH-6YE/exec';
     
     let rawData = [];
     let currentFilteredData = [];
     let isPhemListActive = false;
+
+    // Debug logging
+    function debugLog(message, type = 'info') {
+      const logsDiv = document.getElementById('debugLogs');
+      const timestamp = new Date().toLocaleTimeString();
+      const cssClass = type === 'error' ? 'debug-error' : type === 'success' ? 'debug-success' : 'debug-info';
+      logsDiv.innerHTML += `<div class="debug-log ${cssClass}">[${timestamp}] ${message}</div>`;
+      logsDiv.scrollTop = logsDiv.scrollHeight;
+      console.log(`[${type}] ${message}`);
+    }
+
+    // Toggle debug console
+    document.getElementById('debugBtn').addEventListener('click', () => {
+      const console = document.getElementById('debugConsole');
+      console.classList.toggle('hidden');
+    });
+
+    document.getElementById('clearDebugBtn').addEventListener('click', () => {
+      document.getElementById('debugLogs').innerHTML = '';
+    });
 
     const phemFacilityTypes = [
       "Medium Clinic", "Health Center", "Hospital", "Specialty Clinic",
@@ -338,19 +382,30 @@
     const woredaOptionsList = Array.from({length: 15}, (_, i) => `<option value="Woreda ${i + 1}">Woreda ${i + 1}</option>`).join('');
 
     async function callGoogleScript(action, data = {}) {
-      const response = await fetch(GAS_WEBAPP_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action, data })
-      });
+      debugLog(`Calling GAS: ${action}`, 'info');
       
-      const result = await response.json();
-      
-      if (!result.success) {
-        throw new Error(result.error || 'Unknown error from server');
+      try {
+        const response = await fetch(GAS_WEBAPP_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action, data })
+        });
+        
+        debugLog(`Response status: ${response.status}`, 'info');
+        
+        const result = await response.json();
+        
+        if (!result.success) {
+          debugLog(`Server error: ${result.error}`, 'error');
+          throw new Error(result.error || 'Unknown error from server');
+        }
+        
+        debugLog(`Success: ${action} completed`, 'success');
+        return result.data;
+      } catch (error) {
+        debugLog(`Failed: ${error.message}`, 'error');
+        throw error;
       }
-      
-      return result.data;
     }
 
     function formatDateToDDMMYYYY(dateString) {
@@ -364,6 +419,8 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
+      debugLog('App initialized', 'info');
+      debugLog(`GAS URL: ${GAS_WEBAPP_URL.substring(0, 50)}...`, 'info');
       initializeApp();
       setupEventListeners();
     });
@@ -372,7 +429,22 @@
       const loader = document.getElementById('loading');
       try {
         loader.classList.remove('hidden');
+        debugLog('Starting data fetch...', 'info');
+        
+        // Test connection first
+        debugLog('Testing connection to GAS...', 'info');
+        const testResult = await callGoogleScript('testDataAccess');
+        debugLog(`Sheet info: ${JSON.stringify(testResult)}`, 'success');
+        
+        // Fetch facility data
+        debugLog('Fetching facility data...', 'info');
         rawData = await callGoogleScript('getFacilityData');
+        debugLog(`Loaded ${rawData.length} facilities from sheet`, 'success');
+        
+        if (rawData.length > 0) {
+          debugLog(`First facility: ${rawData[0].name || 'N/A'}`, 'info');
+        }
+        
         loader.classList.add('hidden');
         
         const populateDropdown = (selectId, key) => {
@@ -388,9 +460,12 @@
         populateDropdown('filterStatus', 'operationalStatus');
         updateTypeDropdowns(false);
         applyFilters();
+        
+        showToast(`Loaded ${rawData.length} facilities successfully!`, 'success');
       } catch (error) {
         loader.classList.add('hidden');
-        showToast('Failed to load data. Loading sample data...', 'error');
+        debugLog(`Initialization failed: ${error.message}`, 'error');
+        showToast(`Error: ${error.message}. Using sample data.`, 'error');
         loadSampleData();
       }
     }
@@ -787,6 +862,7 @@
     }
 
     function loadSampleData() {
+      debugLog('Loading sample data as fallback', 'info');
       rawData = [
         { id: "FAC-001", name: "St. Paul's Hospital", ownership: "Public", facilityType: "Hospital", facilitysFacilityTypes: "General Hospital", zone: "Gulele", woreda: "Woreda 1", operationalStatus: "Operational", modifiedDate: "2024-05-12T10:00:00Z" },
         { id: "FAC-002", name: "Hayat Medical Plaza", ownership: "Private", facilityType: "Clinic", facilitysFacilityTypes: "Medium Clinic", zone: "Bole", woreda: "Woreda 8", operationalStatus: "Closed", modifiedDate: "2023-11-05" },

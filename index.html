@@ -7,7 +7,6 @@
   <title>AAPHREM • Master Facility Registry</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
-  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   
@@ -184,22 +183,14 @@
     <div class="flex flex-wrap gap-4 items-end">
       <div class="flex-1 min-w-[200px]">
         <label class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5 flex items-center gap-1.5">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M16.65 16.65A7.5 7.5 0 1116.65 1.5a7.5 7.5 0 010 15.1z" />
-          </svg>
-          Search Name
+          <i class="fas fa-search text-blue-500"></i> Search Name
         </label>
-        <div class="relative">
-          <input type="text" id="searchName" placeholder="Search facilities..." class="premium-input w-full rounded-xl py-2.5 px-3 text-sm text-slate-700">
-        </div>
+        <input type="text" id="searchName" placeholder="Search facilities..." class="premium-input w-full rounded-xl py-2.5 px-3 text-sm text-slate-700">
       </div>
       
       <div class="flex-1 min-w-[140px]">
         <label class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5 flex items-center gap-1.5">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-          </svg>
-          Zone
+          <i class="fas fa-globe-africa text-emerald-500"></i> Zone
         </label>
         <select id="filterZone" class="premium-input w-full rounded-xl py-2.5 px-3 text-sm text-slate-700">
           <option value="">All Zones</option>
@@ -208,11 +199,7 @@
       
       <div class="flex-1 min-w-[140px]">
         <label class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5 flex items-center gap-1.5">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.243-4.243a8 8 0 1111.314 0z" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
-          Woreda
+          <i class="fas fa-map-marker-alt text-rose-500"></i> Woreda
         </label>
         <select id="filterWoreda" class="premium-input w-full rounded-xl py-2.5 px-3 text-sm text-slate-700">
           <option value="">All Woredas</option>
@@ -221,10 +208,7 @@
       
       <div class="flex-1 min-w-[150px]">
         <label class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5 flex items-center gap-1.5">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-violet-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-          </svg>
-          Type
+          <i class="fas fa-building text-violet-500"></i> Type
         </label>
         <select id="filterFacilityType" class="premium-input w-full rounded-xl py-2.5 px-3 text-sm text-slate-700">
           <option value="">All Types</option>
@@ -233,10 +217,7 @@
 
       <div class="flex-1 min-w-[160px]">
         <label class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5 flex items-center gap-1.5">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-teal-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-          </svg>
-          Specific Type
+          <i class="fas fa-clinic-medical text-teal-500"></i> Specific Type
         </label>
         <select id="filterSpecificType" class="premium-input w-full rounded-xl py-2.5 px-3 text-sm text-slate-700">
           <option value="">All Specific Types</option>
@@ -245,10 +226,7 @@
 
       <div class="flex-1 min-w-[150px]">
         <label class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5 flex items-center gap-1.5">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-          </svg>
-          Ownership
+          <i class="fas fa-user-tie text-amber-500"></i> Ownership
         </label>
         <select id="filterOwnership" class="premium-input w-full rounded-xl py-2.5 px-3 text-sm text-slate-700">
           <option value="">All Ownership</option>
@@ -257,10 +235,7 @@
       
       <div class="flex-1 min-w-[140px]">
         <label class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5 flex items-center gap-1.5">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-          </svg>
-          Status
+          <i class="fas fa-heartbeat text-pink-500"></i> Status
         </label>
         <select id="filterStatus" class="premium-input w-full rounded-xl py-2.5 px-3 text-sm text-slate-700">
           <option value="">All Status</option>
@@ -290,8 +265,7 @@
             <th class="py-4 px-5 text-xs bg-blue-50/80">Issue Tracker / Remark</th>
           </tr>
         </thead>
-        <tbody id="tableBody" class="text-sm">
-          </tbody>
+        <tbody id="tableBody" class="text-sm"></tbody>
       </table>
       
       <div id="noData" class="hidden flex flex-col items-center justify-center py-16 px-4 text-center">
@@ -322,24 +296,19 @@
         </button>
       </div>
       
-      <div id="accordionWrapper" class="p-6 overflow-y-auto flex-1 space-y-4 bg-white">
-        </div>
+      <div id="accordionWrapper" class="p-6 overflow-y-auto flex-1 space-y-4 bg-white"></div>
       
     </div>
   </div>
 
   <script>
-    // ============ CONFIGURATION ============
-    // IMPORTANT: Replace this URL with your actual Google Apps Script Web App URL
-    // This is the deployment URL from github.gs
+    // ⚠️ REPLACE THIS WITH YOUR DEPLOYMENT URL AFTER DEPLOYING github.gs
     const GAS_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbwGf_EtBjYJerEQRtIBby9KlSJcLFWR2i5OfkqoEw5B6wT8dtFJzPqe6HxttlaH-6YE/exec';
     
-    // ============ APPLICATION LOGIC ============
     let rawData = [];
     let currentFilteredData = [];
-    let isPhemListActive = false; // Tracks the state of the toggle
+    let isPhemListActive = false;
 
-    // ============ PHEM PREDEFINED LISTS ============
     const phemFacilityTypes = [
       "Medium Clinic", "Health Center", "Hospital", "Specialty Clinic",
       "Specialty Center", "Clinic", "Medical Plaza"
@@ -366,39 +335,24 @@
       "Medical Plaza"
     ];
 
-    // Master list of woredas for the dropdown
     const woredaOptionsList = Array.from({length: 15}, (_, i) => `<option value="Woreda ${i + 1}">Woreda ${i + 1}</option>`).join('');
 
-    // ============ API FUNCTIONS ============
     async function callGoogleScript(action, data = {}) {
-      try {
-        const response = await fetch(GAS_WEBAPP_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ action, data })
-        });
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const result = await response.json();
-        
-        if (!result.success) {
-          throw new Error(result.error || 'Unknown error from server');
-        }
-        
-        return result.data;
-      } catch (error) {
-        console.error('API Error:', error);
-        showToast(`Connection Error: ${error.message}`, 'error');
-        throw error;
+      const response = await fetch(GAS_WEBAPP_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action, data })
+      });
+      
+      const result = await response.json();
+      
+      if (!result.success) {
+        throw new Error(result.error || 'Unknown error from server');
       }
+      
+      return result.data;
     }
 
-    // Utility: Format Date to DD/MM/YYYY
     function formatDateToDDMMYYYY(dateString) {
       if (!dateString) return '-';
       const d = new Date(dateString);
@@ -418,13 +372,9 @@
       const loader = document.getElementById('loading');
       try {
         loader.classList.remove('hidden');
-        
-        // Fetch data from Google Sheets via Apps Script
         rawData = await callGoogleScript('getFacilityData');
-        
         loader.classList.add('hidden');
         
-        // Populate non-dynamic Dropdowns based on fetched data
         const populateDropdown = (selectId, key) => {
           const select = document.getElementById(selectId);
           if(!select) return;
@@ -436,25 +386,18 @@
         populateDropdown('filterWoreda', 'woreda');
         populateDropdown('filterOwnership', 'ownership');
         populateDropdown('filterStatus', 'operationalStatus');
-
-        // Setup dynamic Type dropdowns for the first time (Default: Entire List)
         updateTypeDropdowns(false);
-
         applyFilters();
       } catch (error) {
         loader.classList.add('hidden');
-        console.error('Initialization error:', error);
         showToast('Failed to load data. Loading sample data...', 'error');
         loadSampleData();
       }
     }
 
-    // Dynamic Function to update the Type and Specific Type Dropdowns
     function updateTypeDropdowns(isPhem) {
       const typeSelect = document.getElementById('filterFacilityType');
       const specificTypeSelect = document.getElementById('filterSpecificType');
-
-      // Reset to default option
       typeSelect.innerHTML = '<option value="">All Types</option>';
       specificTypeSelect.innerHTML = '<option value="">All Specific Types</option>';
 
@@ -462,11 +405,9 @@
       let specificTypesToRender = [];
 
       if (isPhem) {
-        // If PHEM active, ONLY show predefined arrays
         typesToRender = [...new Set(phemFacilityTypes)].sort();
         specificTypesToRender = [...new Set(phemSpecificTypes)].sort();
       } else {
-        // If Entire List active, show all available from raw data
         typesToRender = [...new Set(rawData.map(item => item.facilityType).filter(Boolean))].sort();
         specificTypesToRender = [...new Set(rawData.map(item => item.facilitysFacilityTypes).filter(Boolean))].sort();
       }
@@ -486,7 +427,6 @@
         applyFilters();
       });
 
-      // Toggle Listener for Entire List / PHEM List
       document.getElementById('strictListToggle').addEventListener('change', (e) => {
         isPhemListActive = e.target.checked;
         const bg = document.getElementById('toggleBg');
@@ -510,9 +450,7 @@
           labelPHEM.classList.replace('font-bold', 'font-semibold');
         }
 
-        // Rebuild the Type dropdowns instantly based on toggle state
         updateTypeDropdowns(isPhemListActive);
-        
         applyFilters();
       });
 
@@ -522,7 +460,6 @@
         if (e.target.id === 'facilityModalOverlay') closeModal();
       });
       document.getElementById('tableBody').addEventListener('click', handleTableClick);
-      
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
     }
 
@@ -538,17 +475,14 @@
       };
 
       currentFilteredData = rawData.filter(row => {
-        // 1. PHEM List Check - strictly requires both Type AND Specific Type to match
         if (isPhemListActive) {
           const typeMatch = phemFacilityTypes.includes(row.facilityType);
           const specificTypeMatch = phemSpecificTypes.includes(row.facilitysFacilityTypes);
           if (!typeMatch || !specificTypeMatch) return false;
         }
 
-        // 2. Standard Search Check
         if (search && !(row.name || '').toLowerCase().includes(search)) return false;
         
-        // 3. Dropdown Filters Check
         for (const [key, value] of Object.entries(filters)) {
           if (value && row[key] !== value) return false;
         }
@@ -619,14 +553,11 @@
     }
 
     function handleTableClick(e) {
-      // 1. Copy Buttons
       const copyBtn = e.target.closest('.copy-btn');
       if (copyBtn) {
         const textToCopy = copyBtn.dataset.copy;
         navigator.clipboard.writeText(textToCopy).then(() => {
           showToast(`Copied: ${textToCopy}`, 'success');
-          
-          // Visual feedback
           const icon = copyBtn.querySelector('i');
           icon.classList.replace('fa-copy', 'fa-check');
           icon.classList.add('text-green-500');
@@ -638,7 +569,6 @@
         return;
       }
 
-      // 2. Open Modal via Name Click
       const nameBtn = e.target.closest('.facility-name-btn');
       if (nameBtn) {
         const rowData = currentFilteredData.find(r => r.name === nameBtn.dataset.name);
@@ -646,7 +576,6 @@
         return;
       }
 
-      // 3. Remark Dropdown Actions
       const remarkSelect = e.target.closest('.main-remark-select');
       if (remarkSelect) {
         remarkSelect.addEventListener('change', function() {
@@ -654,13 +583,11 @@
           const wBox = container.querySelector('.woreda-mismatch-box');
           const rBox = container.querySelector('.rebrand-textbox');
           wBox.classList.add('hidden'); rBox.classList.add('hidden');
-          
           if (this.value === 'Woreda Mismatch Issue') wBox.classList.remove('hidden');
           if (this.value === 'Rebranded') rBox.classList.remove('hidden');
         });
       }
 
-      // 4. Submit Remark Actions
       const submitBtn = e.target.closest('.submit-remark-btn');
       if (submitBtn) {
         const container = submitBtn.closest('td');
@@ -673,35 +600,26 @@
         let finalRemark = remarkVal;
         if (remarkVal === 'Woreda Mismatch Issue') {
           const woredaVal = container.querySelector('.woreda-mismatch-box').value;
-          if (!woredaVal) {
-            showToast('Please select the correct Woreda', 'error');
-            return;
-          }
+          if (!woredaVal) { showToast('Please select the correct Woreda', 'error'); return; }
           finalRemark += ": " + woredaVal;
         }
         if (remarkVal === 'Rebranded') {
           const newName = container.querySelector('.rebrand-textbox').value.trim();
-          if (!newName) {
-            showToast('Please enter the new facility name', 'error');
-            return;
-          }
+          if (!newName) { showToast('Please enter the new facility name', 'error'); return; }
           finalRemark += ": " + newName;
         }
 
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-        
-        // Get the row data from the button's data attribute
         const rowData = JSON.parse(submitBtn.dataset.row.replace(/&#39;/g, "'"));
         rowData.remark = finalRemark;
         
-        // Send to Google Sheets via github.gs
         callGoogleScript('logIssue', rowData)
           .then(() => {
             submitBtn.innerHTML = '<i class="fas fa-check-double"></i>';
             submitBtn.classList.replace('bg-blue-600', 'bg-green-500');
             showToast(`Saved: ${finalRemark}`, 'success');
           })
-          .catch((error) => {
+          .catch(() => {
             submitBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
             submitBtn.classList.replace('bg-blue-600', 'bg-red-500');
             showToast('Failed to save remark', 'error');
@@ -713,7 +631,6 @@
       }
     }
 
-    // ============ DYNAMIC MODAL GENERATION ============
     function openFacilityModal(data) {
       document.getElementById('modalFacilityTitle').innerText = data.name || 'Facility Details';
       document.getElementById('modalFacilitySubtitle').innerText = `${data.facilityType || 'Facility'} • ${data.operationalStatus || 'Unknown Status'}`;
@@ -742,15 +659,10 @@
         const fieldsHTML = sec.keys.map(key => {
           displayedKeys.add(key);
           let value = data[key];
-          
-          if (key === 'modifiedDate' && value) {
-              value = formatDateToDDMMYYYY(value);
-          }
-
+          if (key === 'modifiedDate' && value) value = formatDateToDDMMYYYY(value);
           if (!value && value !== 0) return ''; 
           
           const label = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
-          
           return `
             <div class="bg-slate-50 border border-slate-100 rounded-xl p-3">
               <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">${label}</span>
@@ -770,7 +682,6 @@
         const otherFieldsHTML = otherKeys.map(key => {
           let val = data[key];
           if (key === 'modifiedDate' && val) val = formatDateToDDMMYYYY(val);
-            
           const label = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
           return `
             <div class="bg-slate-50 border border-slate-100 rounded-xl p-3">
@@ -779,7 +690,6 @@
             </div>
           `;
         }).join('');
-        
         wrapper.insertAdjacentHTML('beforeend', createAccordionSection(99, "Additional Sheet Data", "fa-database", "text-purple-500", otherFieldsHTML, false));
       }
 
@@ -821,14 +731,12 @@
 
     function closeModal() { document.getElementById('facilityModalOverlay').classList.add('hidden'); }
 
-    // ============ CSV EXPORT ============
     function exportToCSV() {
       if (!currentFilteredData || currentFilteredData.length === 0) {
         showToast('No data to export', 'error');
         return;
       }
       
-      // Define ONLY the columns visible in the UI table to be exported
       const exportColumns = [
         { key: 'name', header: 'Facility Name' },
         { key: 'facilityType', header: 'Type' },
@@ -840,19 +748,12 @@
       ];
 
       const csvRows = [];
-      
-      // Push the header row
       csvRows.push(exportColumns.map(col => `"${col.header}"`).join(","));
 
-      // Push the data rows
       currentFilteredData.forEach(row => {
         const values = exportColumns.map(col => {
           let val = row[col.key] === null || row[col.key] === undefined ? '' : String(row[col.key]);
-          
-          if (col.key === 'modifiedDate' && val) {
-              val = formatDateToDDMMYYYY(val);
-          }
-            
+          if (col.key === 'modifiedDate' && val) val = formatDateToDDMMYYYY(val);
           val = val.replace(/"/g, '""'); 
           return `"${val}"`;
         });
@@ -860,9 +761,8 @@
       });
 
       const csvContent = "data:text/csv;charset=utf-8," + csvRows.join("\n");
-      const encodedUri = encodeURI(csvContent);
       const link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
+      link.setAttribute("href", encodeURI(csvContent));
       link.setAttribute("download", `MFR_Table_Export_${new Date().toISOString().split('T')[0]}.csv`);
       document.body.appendChild(link);
       link.click();
@@ -887,20 +787,12 @@
     }
 
     function loadSampleData() {
-      initializeData([
+      rawData = [
         { id: "FAC-001", name: "St. Paul's Hospital", ownership: "Public", facilityType: "Hospital", facilitysFacilityTypes: "General Hospital", zone: "Gulele", woreda: "Woreda 1", operationalStatus: "Operational", modifiedDate: "2024-05-12T10:00:00Z" },
         { id: "FAC-002", name: "Hayat Medical Plaza", ownership: "Private", facilityType: "Clinic", facilitysFacilityTypes: "Medium Clinic", zone: "Bole", woreda: "Woreda 8", operationalStatus: "Closed", modifiedDate: "2023-11-05" },
         { id: "FAC-003", name: "Unknown Outlier", ownership: "Public", facilityType: "Pharmacy", facilitysFacilityTypes: "Retail", zone: "Yeka", woreda: "Woreda 2", operationalStatus: "Operational", modifiedDate: "InvalidDateString" }
-      ]);
-    }
-
-    function initializeData(data) {
-      rawData = data; 
+      ];
       
-      const loader = document.getElementById('loading');
-      if (loader) loader.classList.add('hidden');
-      
-      // Populate non-dynamic Dropdowns based on fetched data
       const populateDropdown = (selectId, key) => {
         const select = document.getElementById(selectId);
         if(!select) return;
@@ -912,10 +804,7 @@
       populateDropdown('filterWoreda', 'woreda');
       populateDropdown('filterOwnership', 'ownership');
       populateDropdown('filterStatus', 'operationalStatus');
-
-      // Setup dynamic Type dropdowns for the first time (Default: Entire List)
       updateTypeDropdowns(false);
-
       applyFilters();
     }
   </script>

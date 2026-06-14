@@ -22,16 +22,16 @@
       color: #0f172a;
       -webkit-font-smoothing: antialiased;
     }
+    
+    /* Main Table Scrollbar */
     ::-webkit-scrollbar { width: 8px; height: 8px; }
     ::-webkit-scrollbar-track { background: #f1f5f9; }
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-    /* Custom thin scrollbar for the smart cards row */
-    .thin-scrollbar::-webkit-scrollbar { height: 6px; }
-    .thin-scrollbar::-webkit-scrollbar-track { background: transparent; }
-    .thin-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-    .thin-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    /* Modern Left-Roll Hidden Scrollbar for Smart Cards */
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
     /* Hardware acceleration for input fields */
     .premium-input {
@@ -64,7 +64,7 @@
       border: 1px solid #e2e8f0;
     }
     
-    table { table-layout: fixed; } /* Forces faster table rendering */
+    table { table-layout: fixed; } 
     
     thead th {
       background-color: #f8fafc;
@@ -174,7 +174,7 @@
 
   <section class="bg-gradient-to-br from-blue-50/80 to-slate-50 p-5 lg:p-6 rounded-2xl shadow-sm border border-blue-100/70">
     
-    <div id="smartCardsContainer" class="flex overflow-x-auto gap-3 pb-4 mb-5 border-b border-blue-200/50 thin-scrollbar">
+    <div id="smartCardsContainer" class="flex overflow-x-auto gap-2.5 pb-3 mb-4 border-b border-blue-100 hide-scrollbar scroll-smooth snap-x">
       </div>
     
     <div class="flex flex-wrap gap-4 items-end">
@@ -252,7 +252,7 @@
       <table class="w-full text-left border-collapse whitespace-nowrap">
         <thead>
           <tr>
-            <th class="py-4 px-5 text-xs w-1/4">Facility Name & ID</th>
+            <th class="py-4 px-5 text-xs w-64">Facility Name</th>
             <th class="py-4 px-5 text-xs hidden sm:table-cell w-32">Type</th>
             <th class="py-4 px-5 text-xs hidden lg:table-cell w-48">Specific Type</th>
             <th class="py-4 px-5 text-xs w-24">Zone</th>
@@ -302,14 +302,14 @@
   <script>
     // Configuration
     const GAS_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbxusuz0fOlAVBbHNAqHiRRMPNiBPrv11T6id4oac1Vdvq_iztqJ7ia3ZMaUBtHD8swf/exec';
-    const RENDER_LIMIT = 150; // Performance tuning: Max rows drawn at once
+    const RENDER_LIMIT = 150; // Performance tuning
     
     // State Caching
     let rawData = [];
     let currentFilteredData = [];
     let isPhemListActive = false;
 
-    // Cache DOM Elements to avoid querying the document repeatedly
+    // Cache DOM Elements 
     const DOM = {
       searchName: document.getElementById('searchName'),
       filterZone: document.getElementById('filterZone'),
@@ -353,7 +353,6 @@
 
     const woredaOptionsList = Array.from({length: 15}, (_, i) => `<option value="Woreda ${i + 1}">Woreda ${i + 1}</option>`).join('');
 
-    // PERFORMANCE UTILITY: Debounce function to stop main-thread blocking on search
     function debounce(func, wait) {
       let timeout;
       return function executedFunction(...args) {
@@ -421,26 +420,28 @@
       specificTypesToRender.sort().forEach(val => DOM.filterSpecificType.insertAdjacentHTML('beforeend', `<option value="${val}">${val}</option>`));
     }
 
-    // Dynamic Smart Cards Render Function
+    // Ultra-Compact Modern Nano-Pills for Summary Cards
     function updateSmartCards(data) {
       const typeCounts = {};
       
-      // Count occurrences of each facility type
       data.forEach(row => {
         const type = row.facilityType || 'Unknown Type';
         typeCounts[type] = (typeCounts[type] || 0) + 1;
       });
       
-      // Sort descending by count
       const sortedTypes = Object.entries(typeCounts).sort((a, b) => b[1] - a[1]);
       
       const html = sortedTypes.map(([type, count]) => `
-        <div class="bg-white border border-blue-100 shadow-sm rounded-xl px-4 py-3 flex flex-col min-w-fit shrink-0 relative overflow-hidden group hover:border-blue-300 transition-colors">
-          <div class="absolute -right-2 -top-2 text-blue-50 opacity-50 group-hover:opacity-100 transition-opacity">
-            <i class="fas fa-building text-5xl"></i>
+        <div class="snap-start bg-white border border-slate-100 shadow-sm rounded-full pl-1.5 pr-2.5 py-1 flex items-center gap-1.5 min-w-fit shrink-0 hover:border-blue-300 hover:shadow transition-all duration-300 cursor-default">
+          <div class="bg-blue-50/80 text-blue-500 rounded-full w-5 h-5 flex items-center justify-center shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+            </svg>
           </div>
-          <span class="text-[11px] uppercase font-bold text-slate-500 mb-1 z-10">${type}</span>
-          <span class="text-2xl font-black text-blue-600 leading-none z-10">${count.toLocaleString()}</span>
+          <div class="flex items-baseline gap-1.5">
+            <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide truncate max-w-[100px]" title="${type}">${type}</span>
+            <span class="text-sm font-black text-slate-800">${count.toLocaleString()}</span>
+          </div>
         </div>
       `).join('');
       
@@ -448,10 +449,8 @@
     }
 
     function setupEventListeners() {
-      // Debounce the text search heavily for performance
       DOM.searchName.addEventListener('input', debounce(applyFilters, 200));
       
-      // Standard selects can trigger immediately
       ['filterZone', 'filterWoreda', 'filterFacilityType', 'filterSpecificType', 'filterOwnership', 'filterStatus'].forEach(id => {
         document.getElementById(id).addEventListener('change', applyFilters);
       });
@@ -497,11 +496,9 @@
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
     }
 
-    // High-performance filter engine
     function applyFilters() {
       const search = DOM.searchName.value.toLowerCase().trim();
       
-      // Cache filter values to avoid DOM reads in the loop
       const fZone = DOM.filterZone.value;
       const fWoreda = DOM.filterWoreda.value;
       const fType = DOM.filterFacilityType.value;
@@ -515,7 +512,6 @@
           if (!phemSpecificTypes.includes(row.facilitysFacilityTypes)) return false;
         }
         
-        // Search matches name OR id
         if (search) {
           const nameMatch = (row.name || '').toLowerCase().includes(search);
           const idMatch = (String(row.id || '')).toLowerCase().includes(search);
@@ -533,7 +529,7 @@
       });
 
       DOM.totalCount.innerText = currentFilteredData.length.toLocaleString();
-      updateSmartCards(currentFilteredData); // Refresh top cards based on search/filters
+      updateSmartCards(currentFilteredData); 
       renderTable(currentFilteredData);
     }
 
@@ -544,7 +540,7 @@
       return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
     }
 
-    // BLAZING FAST RENDER ENGINE: Builds HTML string in memory, injects once.
+    // High Performance DOM Engine
     function renderTable(data) {
       if (data.length === 0) {
         DOM.tableBody.innerHTML = '';
@@ -555,7 +551,6 @@
       
       DOM.noData.classList.add('hidden');
 
-      // Virtualization: Only render the top X items so the browser doesn't freeze
       const isLimited = data.length > RENDER_LIMIT;
       if (isLimited) {
         DOM.renderLimitMsg.classList.remove('hidden');
@@ -565,31 +560,22 @@
 
       const dataToRender = data.slice(0, RENDER_LIMIT);
 
-      // Create a massive HTML string instantly instead of appending nodes in a loop
       const htmlString = dataToRender.map(row => {
         const isOp = (row.operationalStatus || '').toLowerCase().includes('operational');
         const badgeClass = isOp ? 'badge-success' : 'badge-error';
         const safeName = row.name ? row.name.replace(/"/g, '&quot;') : '';
-        const safeId = row.id ? String(row.id).replace(/"/g, '&quot;') : '';
         
         return `
           <tr>
-            <td class="py-3 px-5 truncate w-1/4 max-w-[250px]">
-              <div class="flex flex-col gap-1">
-                <div class="group flex items-center gap-2">
-                  <button class="facility-name-btn font-semibold text-blue-600 hover:text-blue-800 hover:underline text-left truncate" title="${safeName}" data-name="${safeName}">
-                    ${row.name || '-'}
-                  </button>
-                  ${row.name ? `<button class="copy-btn opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-blue-600 p-1 shrink-0" title="Copy Name" data-copy="${safeName}"><i class="fas fa-copy"></i></button>` : ''}
-                </div>
-                ${row.id ? `
-                <div class="group/id flex items-center gap-1.5 text-[11px] text-slate-500 w-fit">
-                  <span class="font-mono bg-slate-200/50 px-1.5 py-0.5 rounded border border-slate-200 truncate">ID: ${row.id}</span>
-                  <button class="copy-btn opacity-0 group-hover/id:opacity-100 transition-opacity text-slate-400 hover:text-blue-600 p-0.5 shrink-0" title="Copy ID" data-copy="${safeId}"><i class="fas fa-copy"></i></button>
-                </div>
-                ` : ''}
+            <td class="py-3 px-5 w-64 max-w-[250px]">
+              <div class="group flex items-center gap-2">
+                <button class="facility-name-btn font-semibold text-blue-600 hover:text-blue-800 hover:underline text-left truncate" title="${safeName}" data-name="${safeName}">
+                  ${row.name || '-'}
+                </button>
+                ${row.name ? `<button class="copy-btn opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-blue-600 p-1 shrink-0" title="Copy Name" data-copy="${safeName}"><i class="fas fa-copy"></i></button>` : ''}
               </div>
             </td>
+
             <td class="py-3 px-5 text-slate-600 hidden sm:table-cell truncate" title="${row.facilityType || ''}">${row.facilityType || '-'}</td>
             <td class="py-3 px-5 text-slate-500 hidden lg:table-cell truncate" title="${row.facilitysFacilityTypes || ''}">${row.facilitysFacilityTypes || '-'}</td>
             <td class="py-3 px-5 text-slate-700 font-medium truncate">${row.zone || '-'}</td>
@@ -621,13 +607,11 @@
             </td>
           </tr>
         `;
-      }).join(''); // Join array into a single massive string
+      }).join(''); 
 
-      // Inject into DOM exactly ONCE.
       DOM.tableBody.innerHTML = htmlString;
     }
 
-    // Delegated Table Click Handler (Event delegation stays fast regardless of string injection)
     function handleTableClick(e) {
       const copyBtn = e.target.closest('.copy-btn');
       if (copyBtn) {
@@ -704,7 +688,7 @@
       }
     }
 
-    // Modal Processing
+    // Modal Processing (ID remains inside Contact & Identifiers naturally)
     function openFacilityModal(data) {
       document.getElementById('modalFacilityTitle').innerText = data.name || 'Facility Details';
       document.getElementById('modalFacilitySubtitle').innerText = `${data.facilityType || 'Facility'} • ${data.operationalStatus || 'Unknown Status'}`;
@@ -735,9 +719,16 @@
           const value = data[key];
           if (!value && value !== 0) return '';
           const label = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+          
+          // Add copy logic specifically to the ID field inside the modal if it's the 'id' key
+          const isIdField = key === 'id' || key === 'hmisCode' || key === 'dhis2Id';
+          
           return `<div class="bg-slate-50 border border-slate-100 rounded-xl p-3">
             <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">${label}</span>
-            <span class="block text-sm font-semibold text-slate-800 break-words">${value}</span>
+            <div class="group flex items-center gap-2">
+              <span class="block text-sm font-semibold text-slate-800 break-words">${value}</span>
+              ${isIdField ? `<button class="copy-btn opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-blue-600 p-0.5 shrink-0" title="Copy ${label}" data-copy="${String(value).replace(/"/g, '&quot;')}"><i class="fas fa-copy"></i></button>` : ''}
+            </div>
           </div>`;
         }).filter(Boolean).join('');
 

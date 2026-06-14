@@ -326,8 +326,8 @@
   </div>
 
   <script>
-    // ⚠️ REPLACE THIS WITH YOUR ACTUAL DEPLOYMENT URL
-    const GAS_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbwGf_EtBjYJerEQRtIBby9KlSJcLFWR2i5OfkqoEw5B6wT8dtFJzPqe6HxttlaH-6YE/exec';
+    // ✅ UPDATED: Using your Google Apps Script Web App URL
+    const GAS_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbxusuz0fOlAVBbHNAqHiRRMPNiBPrv11T6id4oac1Vdvq_iztqJ7ia3ZMaUBtHD8swf/exec';
     
     let rawData = [];
     let currentFilteredData = [];
@@ -465,8 +465,7 @@
       } catch (error) {
         loader.classList.add('hidden');
         debugLog(`Initialization failed: ${error.message}`, 'error');
-        showToast(`Error: ${error.message}. Using sample data.`, 'error');
-        loadSampleData();
+        showToast(`Error: ${error.message}. Check console and debug panel.`, 'error');
       }
     }
 
@@ -859,29 +858,6 @@
       toast.innerHTML = `<i class="fas ${icon}"></i> ${message}`;
       document.body.appendChild(toast);
       setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
-    }
-
-    function loadSampleData() {
-      debugLog('Loading sample data as fallback', 'info');
-      rawData = [
-        { id: "FAC-001", name: "St. Paul's Hospital", ownership: "Public", facilityType: "Hospital", facilitysFacilityTypes: "General Hospital", zone: "Gulele", woreda: "Woreda 1", operationalStatus: "Operational", modifiedDate: "2024-05-12T10:00:00Z" },
-        { id: "FAC-002", name: "Hayat Medical Plaza", ownership: "Private", facilityType: "Clinic", facilitysFacilityTypes: "Medium Clinic", zone: "Bole", woreda: "Woreda 8", operationalStatus: "Closed", modifiedDate: "2023-11-05" },
-        { id: "FAC-003", name: "Unknown Outlier", ownership: "Public", facilityType: "Pharmacy", facilitysFacilityTypes: "Retail", zone: "Yeka", woreda: "Woreda 2", operationalStatus: "Operational", modifiedDate: "InvalidDateString" }
-      ];
-      
-      const populateDropdown = (selectId, key) => {
-        const select = document.getElementById(selectId);
-        if(!select) return;
-        const uniqueVals = [...new Set(rawData.map(item => item[key]).filter(Boolean))].sort();
-        uniqueVals.forEach(val => select.insertAdjacentHTML('beforeend', `<option value="${val}">${val}</option>`));
-      };
-
-      populateDropdown('filterZone', 'zone');
-      populateDropdown('filterWoreda', 'woreda');
-      populateDropdown('filterOwnership', 'ownership');
-      populateDropdown('filterStatus', 'operationalStatus');
-      updateTypeDropdowns(false);
-      applyFilters();
     }
   </script>
 </body>

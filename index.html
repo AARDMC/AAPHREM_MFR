@@ -27,6 +27,12 @@
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
+    /* Custom thin scrollbar for the smart cards row */
+    .thin-scrollbar::-webkit-scrollbar { height: 6px; }
+    .thin-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .thin-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    .thin-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
     /* Hardware acceleration for input fields */
     .premium-input {
       background: #ffffff;
@@ -122,9 +128,9 @@
   <header class="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl shadow-lg p-6 lg:p-8 flex flex-col xl:flex-row items-start xl:items-center justify-between gap-6 relative overflow-hidden">
     <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 20px 20px;"></div>
     
-    <div class="relative z-10 flex items-center gap-5">
-      <div class="bg-white/20 p-4 rounded-xl backdrop-blur-md shadow-inner">
-        <i class="fas fa-hospital-alt text-3xl text-white"></i>
+    <div class="relative z-10 flex items-center gap-4 sm:gap-5">
+      <div class="bg-white p-2 sm:p-3 rounded-xl shadow-inner flex items-center justify-center w-14 h-14 sm:w-20 sm:h-20 shrink-0">
+        <img src="https://raw.githubusercontent.com/AARDMC/AAPHREM_MFR/main/Screenshot%202026-04-04%20162043.png" alt="AARDMC Logo" class="w-full h-full object-contain">
       </div>
       <div>
         <h1 class="text-2xl sm:text-3xl lg:text-3xl font-bold text-white tracking-tight">AAPHREM Master Facility Registry (MFR)</h1>
@@ -167,19 +173,16 @@
   </header>
 
   <section class="bg-gradient-to-br from-blue-50/80 to-slate-50 p-5 lg:p-6 rounded-2xl shadow-sm border border-blue-100/70">
-    <div class="flex items-center gap-3 mb-5 border-b border-blue-200/50 pb-4">
-      <div class="bg-white p-2 rounded-lg shadow-sm border border-blue-100/50">
-        <i class="fas fa-filter text-blue-600"></i>
+    
+    <div id="smartCardsContainer" class="flex overflow-x-auto gap-3 pb-4 mb-5 border-b border-blue-200/50 thin-scrollbar">
       </div>
-      <h2 class="text-lg font-bold text-slate-800">Filter Registry</h2>
-    </div>
     
     <div class="flex flex-wrap gap-4 items-end">
       <div class="flex-1 min-w-[200px]">
         <label class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5 flex items-center gap-1.5">
-          <i class="fas fa-search text-blue-500"></i> Search Name
+          <i class="fas fa-search text-blue-500"></i> Search
         </label>
-        <input type="text" id="searchName" placeholder="Search facilities..." class="premium-input w-full rounded-xl py-2.5 px-3 text-sm text-slate-700">
+        <input type="text" id="searchName" placeholder="Search by Facility Name or ID..." class="premium-input w-full rounded-xl py-2.5 px-3 text-sm text-slate-700">
       </div>
       
       <div class="flex-1 min-w-[140px]">
@@ -249,7 +252,7 @@
       <table class="w-full text-left border-collapse whitespace-nowrap">
         <thead>
           <tr>
-            <th class="py-4 px-5 text-xs w-1/4">Facility Name</th>
+            <th class="py-4 px-5 text-xs w-1/4">Facility Name & ID</th>
             <th class="py-4 px-5 text-xs hidden sm:table-cell w-32">Type</th>
             <th class="py-4 px-5 text-xs hidden lg:table-cell w-48">Specific Type</th>
             <th class="py-4 px-5 text-xs w-24">Zone</th>
@@ -318,7 +321,8 @@
       tableBody: document.getElementById('tableBody'),
       totalCount: document.getElementById('totalCount'),
       noData: document.getElementById('noData'),
-      renderLimitMsg: document.getElementById('renderLimitMsg')
+      renderLimitMsg: document.getElementById('renderLimitMsg'),
+      smartCardsContainer: document.getElementById('smartCardsContainer')
     };
 
     // PHEM Facility Types
@@ -417,6 +421,32 @@
       specificTypesToRender.sort().forEach(val => DOM.filterSpecificType.insertAdjacentHTML('beforeend', `<option value="${val}">${val}</option>`));
     }
 
+    // Dynamic Smart Cards Render Function
+    function updateSmartCards(data) {
+      const typeCounts = {};
+      
+      // Count occurrences of each facility type
+      data.forEach(row => {
+        const type = row.facilityType || 'Unknown Type';
+        typeCounts[type] = (typeCounts[type] || 0) + 1;
+      });
+      
+      // Sort descending by count
+      const sortedTypes = Object.entries(typeCounts).sort((a, b) => b[1] - a[1]);
+      
+      const html = sortedTypes.map(([type, count]) => `
+        <div class="bg-white border border-blue-100 shadow-sm rounded-xl px-4 py-3 flex flex-col min-w-fit shrink-0 relative overflow-hidden group hover:border-blue-300 transition-colors">
+          <div class="absolute -right-2 -top-2 text-blue-50 opacity-50 group-hover:opacity-100 transition-opacity">
+            <i class="fas fa-building text-5xl"></i>
+          </div>
+          <span class="text-[11px] uppercase font-bold text-slate-500 mb-1 z-10">${type}</span>
+          <span class="text-2xl font-black text-blue-600 leading-none z-10">${count.toLocaleString()}</span>
+        </div>
+      `).join('');
+      
+      DOM.smartCardsContainer.innerHTML = html;
+    }
+
     function setupEventListeners() {
       // Debounce the text search heavily for performance
       DOM.searchName.addEventListener('input', debounce(applyFilters, 200));
@@ -484,7 +514,14 @@
           if (!phemFacilityTypes.includes(row.facilityType)) return false;
           if (!phemSpecificTypes.includes(row.facilitysFacilityTypes)) return false;
         }
-        if (search && !(row.name || '').toLowerCase().includes(search)) return false;
+        
+        // Search matches name OR id
+        if (search) {
+          const nameMatch = (row.name || '').toLowerCase().includes(search);
+          const idMatch = (String(row.id || '')).toLowerCase().includes(search);
+          if (!nameMatch && !idMatch) return false;
+        }
+
         if (fZone && row.zone !== fZone) return false;
         if (fWoreda && row.woreda !== fWoreda) return false;
         if (fType && row.facilityType !== fType) return false;
@@ -496,6 +533,7 @@
       });
 
       DOM.totalCount.innerText = currentFilteredData.length.toLocaleString();
+      updateSmartCards(currentFilteredData); // Refresh top cards based on search/filters
       renderTable(currentFilteredData);
     }
 
@@ -532,15 +570,24 @@
         const isOp = (row.operationalStatus || '').toLowerCase().includes('operational');
         const badgeClass = isOp ? 'badge-success' : 'badge-error';
         const safeName = row.name ? row.name.replace(/"/g, '&quot;') : '';
+        const safeId = row.id ? String(row.id).replace(/"/g, '&quot;') : '';
         
         return `
           <tr>
-            <td class="py-3 px-5 truncate w-1/4">
-              <div class="group flex items-center gap-2">
-                <button class="facility-name-btn font-semibold text-blue-600 hover:text-blue-800 hover:underline text-left truncate" title="${safeName}" data-name="${safeName}">
-                  ${row.name || '-'}
-                </button>
-                ${row.name ? `<button class="copy-btn opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-blue-600 p-1 shrink-0" title="Copy Name" data-copy="${safeName}"><i class="fas fa-copy"></i></button>` : ''}
+            <td class="py-3 px-5 truncate w-1/4 max-w-[250px]">
+              <div class="flex flex-col gap-1">
+                <div class="group flex items-center gap-2">
+                  <button class="facility-name-btn font-semibold text-blue-600 hover:text-blue-800 hover:underline text-left truncate" title="${safeName}" data-name="${safeName}">
+                    ${row.name || '-'}
+                  </button>
+                  ${row.name ? `<button class="copy-btn opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-blue-600 p-1 shrink-0" title="Copy Name" data-copy="${safeName}"><i class="fas fa-copy"></i></button>` : ''}
+                </div>
+                ${row.id ? `
+                <div class="group/id flex items-center gap-1.5 text-[11px] text-slate-500 w-fit">
+                  <span class="font-mono bg-slate-200/50 px-1.5 py-0.5 rounded border border-slate-200 truncate">ID: ${row.id}</span>
+                  <button class="copy-btn opacity-0 group-hover/id:opacity-100 transition-opacity text-slate-400 hover:text-blue-600 p-0.5 shrink-0" title="Copy ID" data-copy="${safeId}"><i class="fas fa-copy"></i></button>
+                </div>
+                ` : ''}
               </div>
             </td>
             <td class="py-3 px-5 text-slate-600 hidden sm:table-cell truncate" title="${row.facilityType || ''}">${row.facilityType || '-'}</td>
@@ -556,6 +603,7 @@
                     <option value="">Select remark...</option>
                     <option value="Operational">✅ Operational</option>
                     <option value="Closed">🚫 Closed</option>
+                    <option value="Duplicated">📋 Duplicated</option>
                     <option value="Woreda Mismatch Issue">⚠️ Woreda Mismatch</option>
                     <option value="Rebranded">🔄 Rebranded</option>
                     <option value="Moved">📍 Moved</option>
@@ -754,7 +802,7 @@
         return;
       }
       
-      const exportColumns = ['name', 'facilityType', 'facilitysFacilityTypes', 'zone', 'woreda', 'operationalStatus', 'modifiedDate'];
+      const exportColumns = ['name', 'id', 'facilityType', 'facilitysFacilityTypes', 'zone', 'woreda', 'operationalStatus', 'modifiedDate'];
       const csvRows = [exportColumns.map(col => `"${col}"`).join(",")];
 
       currentFilteredData.forEach(row => {

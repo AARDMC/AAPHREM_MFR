@@ -17,12 +17,10 @@
       color: #0f172a;
       -webkit-font-smoothing: antialiased;
     }
-
     ::-webkit-scrollbar { width: 8px; height: 8px; }
     ::-webkit-scrollbar-track { background: #f1f5f9; }
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-
     .premium-input {
       background: #ffffff;
       border: 1px solid #e2e8f0;
@@ -34,7 +32,6 @@
       box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
       outline: none;
     }
-
     select {
       appearance: none;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
@@ -43,7 +40,6 @@
       background-size: 1rem;
       padding-right: 2.5rem;
     }
-
     .table-container {
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
       border-radius: 1rem;
@@ -51,7 +47,6 @@
       background: #ffffff;
       border: 1px solid #e2e8f0;
     }
-    
     thead th {
       background-color: #f8fafc;
       border-bottom: 1px solid #e2e8f0;
@@ -63,13 +58,11 @@
       top: 0;
       z-index: 10;
     }
-    
     tbody tr {
       border-bottom: 1px solid #f1f5f9;
       transition: background-color 0.15s ease;
     }
     tbody tr:hover { background-color: #f8fafc; }
-    
     .badge {
       padding: 0.25rem 0.6rem;
       border-radius: 9999px;
@@ -79,28 +72,14 @@
     }
     .badge-success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
     .badge-error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
-
-    .modal-overlay {
-      background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(4px);
-    }
-    
-    .modal-content {
-      animation: modalSlideUp 0.3s ease-out forwards;
-    }
-    
+    .modal-overlay { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); }
+    .modal-content { animation: modalSlideUp 0.3s ease-out forwards; }
     @keyframes modalSlideUp {
       from { opacity: 0; transform: translateY(20px) scale(0.98); }
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
-
-    .accordion-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s ease-in-out;
-    }
+    .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out; }
     .accordion-content.open { max-height: 3000px; }
-
     .spinner {
       border: 3px solid rgba(255, 255, 255, 0.3);
       border-radius: 50%;
@@ -110,22 +89,39 @@
       animation: spin 1s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
-
-    .toast { 
-      animation: slideInBottom 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
-    }
+    .toast { animation: slideInBottom 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     @keyframes slideInBottom {
       from { transform: translateY(100%); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
+    }
+    .error-banner {
+      background: #fee2e2;
+      border: 1px solid #fecaca;
+      color: #991b1b;
+      padding: 1rem;
+      border-radius: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
     }
   </style>
 </head>
 <body class="p-4 sm:p-6 lg:p-8 flex flex-col gap-6 max-w-[1600px] mx-auto min-h-screen">
 
-  <!-- Header -->
+  <!-- Error Banner (hidden by default) -->
+  <div id="errorBanner" class="error-banner hidden">
+    <i class="fas fa-exclamation-triangle text-xl"></i>
+    <div>
+      <div class="font-bold">Connection Error</div>
+      <div id="errorMessage" class="text-sm"></div>
+    </div>
+    <button id="retryBtn" class="ml-auto bg-red-100 hover:bg-red-200 px-3 py-1 rounded-lg text-sm font-medium">
+      <i class="fas fa-redo mr-1"></i> Retry
+    </button>
+  </div>
+
   <header class="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl shadow-lg p-6 lg:p-8 flex flex-col xl:flex-row items-start xl:items-center justify-between gap-6 relative overflow-hidden">
     <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 20px 20px;"></div>
-    
     <div class="relative z-10 flex items-center gap-5">
       <div class="bg-white/20 p-4 rounded-xl backdrop-blur-md shadow-inner">
         <i class="fas fa-hospital-alt text-3xl text-white"></i>
@@ -137,7 +133,6 @@
         </p>
       </div>
     </div>
-    
     <div class="relative z-10 flex flex-wrap items-center gap-4 w-full xl:w-auto">
       <div class="bg-white/10 backdrop-blur-md px-4 py-2.5 rounded-xl border border-white/20 flex items-center gap-3">
         <span id="toggleLabelEntire" class="text-white text-sm font-bold">Entire List</span>
@@ -148,7 +143,6 @@
         </label>
         <span id="toggleLabelPHEM" class="text-white/50 text-sm font-semibold">PHEM List</span>
       </div>
-
       <div class="bg-white/10 backdrop-blur-md px-5 py-3 rounded-xl border border-white/20 flex items-center gap-4">
         <div class="bg-blue-500/50 p-2 rounded-lg">
           <i class="fas fa-chart-bar text-white"></i>
@@ -158,11 +152,9 @@
           <span id="totalCount" class="text-white text-2xl font-bold block leading-none">0</span>
         </div>
       </div>
-      
       <button id="exportBtn" class="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-white px-5 py-3 rounded-xl font-semibold transition-colors shadow-sm">
         <i class="fas fa-download"></i> <span class="hidden sm:inline">Export CSV</span>
       </button>
-      
       <div id="loading" class="hidden bg-blue-800/50 px-4 py-2 rounded-lg border border-blue-400/30 flex items-center gap-3">
         <div class="spinner"></div>
         <span class="text-white text-sm font-medium">Syncing Data...</span>
@@ -170,7 +162,7 @@
     </div>
   </header>
 
-  <!-- Filters -->
+  <!-- Filters (unchanged) -->
   <section class="bg-gradient-to-br from-blue-50/80 to-slate-50 p-5 lg:p-6 rounded-2xl shadow-sm border border-blue-100/70">
     <div class="flex items-center gap-3 mb-5 border-b border-blue-200/50 pb-4">
       <div class="bg-white p-2 rounded-lg shadow-sm border border-blue-100/50">
@@ -180,73 +172,37 @@
       </div>
       <h2 class="text-lg font-bold text-slate-800">Filter Registry</h2>
     </div>
-    
     <div class="flex flex-wrap gap-4 items-end">
       <div class="flex-1 min-w-[200px]">
-        <label class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5 flex items-center gap-1.5">
-          <i class="fas fa-search text-blue-500"></i> Search Name
-        </label>
+        <label class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5 flex items-center gap-1.5"><i class="fas fa-search text-blue-500"></i> Search Name</label>
         <input type="text" id="searchName" placeholder="Search facilities..." class="premium-input w-full rounded-xl py-2.5 px-3 text-sm text-slate-700">
       </div>
-      
       <div class="flex-1 min-w-[140px]">
-        <label class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5 flex items-center gap-1.5">
-          <i class="fas fa-globe-africa text-emerald-500"></i> Zone
-        </label>
-        <select id="filterZone" class="premium-input w-full rounded-xl py-2.5 px-3 text-sm text-slate-700">
-          <option value="">All Zones</option>
-        </select>
+        <label class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5 flex items-center gap-1.5"><i class="fas fa-globe-africa text-emerald-500"></i> Zone</label>
+        <select id="filterZone" class="premium-input w-full rounded-xl py-2.5 px-3 text-sm text-slate-700"><option value="">All Zones</option></select>
       </div>
-      
       <div class="flex-1 min-w-[140px]">
-        <label class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5 flex items-center gap-1.5">
-          <i class="fas fa-map-marker-alt text-rose-500"></i> Woreda
-        </label>
-        <select id="filterWoreda" class="premium-input w-full rounded-xl py-2.5 px-3 text-sm text-slate-700">
-          <option value="">All Woredas</option>
-        </select>
+        <label class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5 flex items-center gap-1.5"><i class="fas fa-map-marker-alt text-rose-500"></i> Woreda</label>
+        <select id="filterWoreda" class="premium-input w-full rounded-xl py-2.5 px-3 text-sm text-slate-700"><option value="">All Woredas</option></select>
       </div>
-      
       <div class="flex-1 min-w-[150px]">
-        <label class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5 flex items-center gap-1.5">
-          <i class="fas fa-building text-violet-500"></i> Type
-        </label>
-        <select id="filterFacilityType" class="premium-input w-full rounded-xl py-2.5 px-3 text-sm text-slate-700">
-          <option value="">All Types</option>
-        </select>
+        <label class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5 flex items-center gap-1.5"><i class="fas fa-building text-violet-500"></i> Type</label>
+        <select id="filterFacilityType" class="premium-input w-full rounded-xl py-2.5 px-3 text-sm text-slate-700"><option value="">All Types</option></select>
       </div>
-
       <div class="flex-1 min-w-[160px]">
-        <label class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5 flex items-center gap-1.5">
-          <i class="fas fa-clinic-medical text-teal-500"></i> Specific Type
-        </label>
-        <select id="filterSpecificType" class="premium-input w-full rounded-xl py-2.5 px-3 text-sm text-slate-700">
-          <option value="">All Specific Types</option>
-        </select>
+        <label class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5 flex items-center gap-1.5"><i class="fas fa-clinic-medical text-teal-500"></i> Specific Type</label>
+        <select id="filterSpecificType" class="premium-input w-full rounded-xl py-2.5 px-3 text-sm text-slate-700"><option value="">All Specific Types</option></select>
       </div>
-
       <div class="flex-1 min-w-[150px]">
-        <label class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5 flex items-center gap-1.5">
-          <i class="fas fa-user-tie text-amber-500"></i> Ownership
-        </label>
-        <select id="filterOwnership" class="premium-input w-full rounded-xl py-2.5 px-3 text-sm text-slate-700">
-          <option value="">All Ownership</option>
-        </select>
+        <label class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5 flex items-center gap-1.5"><i class="fas fa-user-tie text-amber-500"></i> Ownership</label>
+        <select id="filterOwnership" class="premium-input w-full rounded-xl py-2.5 px-3 text-sm text-slate-700"><option value="">All Ownership</option></select>
       </div>
-      
       <div class="flex-1 min-w-[140px]">
-        <label class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5 flex items-center gap-1.5">
-          <i class="fas fa-heartbeat text-pink-500"></i> Status
-        </label>
-        <select id="filterStatus" class="premium-input w-full rounded-xl py-2.5 px-3 text-sm text-slate-700">
-          <option value="">All Status</option>
-        </select>
+        <label class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5 flex items-center gap-1.5"><i class="fas fa-heartbeat text-pink-500"></i> Status</label>
+        <select id="filterStatus" class="premium-input w-full rounded-xl py-2.5 px-3 text-sm text-slate-700"><option value="">All Status</option></select>
       </div>
-      
       <div class="w-full sm:w-auto">
-        <button id="resetFilters" class="w-full flex items-center justify-center gap-2 bg-white border border-blue-200 hover:bg-blue-50 text-blue-700 font-semibold py-2.5 px-5 rounded-xl transition-colors shadow-sm text-sm">
-          <i class="fas fa-undo"></i> Reset
-        </button>
+        <button id="resetFilters" class="w-full flex items-center justify-center gap-2 bg-white border border-blue-200 hover:bg-blue-50 text-blue-700 font-semibold py-2.5 px-5 rounded-xl transition-colors shadow-sm text-sm"><i class="fas fa-undo"></i> Reset</button>
       </div>
     </div>
   </section>
@@ -269,53 +225,46 @@
         </thead>
         <tbody id="tableBody" class="text-sm"></tbody>
       </table>
-      
       <div id="noData" class="hidden flex flex-col items-center justify-center py-16 px-4 text-center">
-        <div class="bg-slate-100 p-4 rounded-full mb-4">
-          <i class="fas fa-folder-open text-4xl text-slate-300"></i>
-        </div>
+        <div class="bg-slate-100 p-4 rounded-full mb-4"><i class="fas fa-folder-open text-4xl text-slate-300"></i></div>
         <h3 class="text-lg font-bold text-slate-700">No facilities found</h3>
         <p class="text-slate-500 mt-1 text-sm">Try adjusting your filters or search query.</p>
       </div>
     </div>
   </main>
 
-  <!-- Facility Detail Modal -->
+  <!-- Modal (unchanged) -->
   <div id="facilityModalOverlay" class="modal-overlay fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6">
     <div class="modal-content bg-white w-full max-w-4xl max-h-full rounded-2xl shadow-2xl flex flex-col overflow-hidden">
       <div class="bg-slate-50 px-6 py-5 border-b border-slate-200 flex justify-between items-center shrink-0">
         <div class="flex items-center gap-4">
-          <div class="bg-blue-100 text-blue-600 p-3 rounded-xl">
-            <i class="fas fa-clinic-medical text-xl"></i>
-          </div>
+          <div class="bg-blue-100 text-blue-600 p-3 rounded-xl"><i class="fas fa-clinic-medical text-xl"></i></div>
           <div>
             <h2 id="modalFacilityTitle" class="text-xl font-bold text-slate-800">Facility Details</h2>
             <p id="modalFacilitySubtitle" class="text-sm text-slate-500 font-medium mt-0.5">Comprehensive Data Record</p>
           </div>
         </div>
-        <button id="closeModalBtn" class="text-slate-400 hover:text-slate-600 bg-white hover:bg-slate-100 p-2 rounded-lg transition-colors border border-slate-200">
-          <i class="fas fa-times text-xl"></i>
-        </button>
+        <button id="closeModalBtn" class="text-slate-400 hover:text-slate-600 bg-white hover:bg-slate-100 p-2 rounded-lg transition-colors border border-slate-200"><i class="fas fa-times text-xl"></i></button>
       </div>
       <div id="accordionWrapper" class="p-6 overflow-y-auto flex-1 space-y-4 bg-white"></div>
     </div>
   </div>
 
   <script>
-    // Configuration
+    // ===== CONFIGURATION =====
     const GAS_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbxusuz0fOlAVBbHNAqHiRRMPNiBPrv11T6id4oac1Vdvq_iztqJ7ia3ZMaUBtHD8swf/exec';
     
-    // State
+    // ===== STATE =====
     let rawData = [];
     let currentFilteredData = [];
     let isPhemListActive = false;
+    let columnMapping = {}; // Will hold mapping from expected keys to actual header names
 
-    // PHEM Facility Types
+    // PHEM lists (unchanged)
     const phemFacilityTypes = [
       "Medium Clinic", "Health Center", "Hospital", "Specialty Clinic",
       "Specialty Center", "Clinic", "Medical Plaza"
     ];
-      
     const phemSpecificTypes = [
       "Medium Clinic", "Health Center", "Primary Clinic", "General Hospital",
       "Internal Medicine clinic", "Institution Based Medium Clinic",
@@ -335,41 +284,61 @@
       "Internal Medicine Center, Orthopedic Center", "Cardiac Center, Internal Medicine Center",
       "Medical Plaza"
     ];
-
     const woredaOptionsList = Array.from({length: 15}, (_, i) => `<option value="Woreda ${i + 1}">Woreda ${i + 1}</option>`).join('');
 
-    // API Calls
+    // ===== API CALL =====
     async function callGoogleScript(action, data = {}) {
       const response = await fetch(GAS_WEBAPP_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action, data })
       });
-      
       const result = await response.json();
-      
       if (!result.success) {
         throw new Error(result.error || 'Unknown error from server');
       }
-      
       return result.data;
     }
 
-    // Initialize
-    document.addEventListener("DOMContentLoaded", () => {
-      initializeApp();
+    // ===== ERROR HANDLING =====
+    function showError(message) {
+      const banner = document.getElementById('errorBanner');
+      document.getElementById('errorMessage').textContent = message;
+      banner.classList.remove('hidden');
+    }
+    function hideError() {
+      document.getElementById('errorBanner').classList.add('hidden');
+    }
+
+    // ===== INITIALIZATION =====
+    document.addEventListener("DOMContentLoaded", async () => {
       setupEventListeners();
+      document.getElementById('retryBtn').addEventListener('click', initializeApp);
+      await initializeApp();
     });
 
     async function initializeApp() {
       const loader = document.getElementById('loading');
+      hideError();
       try {
         loader.classList.remove('hidden');
         
+        // 1. Test connection and get column names
+        const testData = await callGoogleScript('testDataAccess');
+        const columns = testData.columns || [];
+        
+        // Build column mapping (flexible matching)
+        buildColumnMapping(columns);
+        
+        // 2. Fetch facility data
         rawData = await callGoogleScript('getFacilityData');
+        
+        // 3. Normalize data using mapping
+        rawData = rawData.map(row => normalizeRow(row));
         
         loader.classList.add('hidden');
         
+        // 4. Populate filters
         populateDropdown('filterZone', 'zone');
         populateDropdown('filterWoreda', 'woreda');
         populateDropdown('filterOwnership', 'ownership');
@@ -380,11 +349,47 @@
         showToast(`Loaded ${rawData.length} facilities successfully!`, 'success');
       } catch (error) {
         loader.classList.add('hidden');
-        showToast(`Error loading data: ${error.message}`, 'error');
-        console.error('Initialization failed:', error);
+        console.error('Initialization error:', error);
+        showError(error.message);
+        showToast(`Error: ${error.message}`, 'error');
       }
     }
 
+    // Build mapping from expected keys (lowercase, no spaces) to actual column names
+    function buildColumnMapping(columns) {
+      const expectedKeys = ['name', 'facilitytype', 'facilitysFacilityTypes', 'zone', 'woreda', 
+                            'ownership', 'operationalstatus', 'modifieddate', 'othername', 'oldname',
+                            'region', 'kebele', 'specificareaname', 'latitude', 'longitude',
+                            'facilityownersname', 'phonenumber', 'email', 'website', 'hmiscode', 'dhis2id', 'id', 'rowguid'];
+      columnMapping = {};
+      columns.forEach(col => {
+        const normalized = col.toString().toLowerCase().replace(/[^a-z0-9]/g, ''); // Remove spaces/special chars
+        expectedKeys.forEach(key => {
+          if (normalized === key) {
+            columnMapping[key] = col; // map normalized key to actual column name
+          }
+        });
+      });
+      // If 'facilitysFacilityTypes' not found, try 'specifictype' or similar
+      if (!columnMapping['facilitysfacilitytypes']) {
+        const alt = columns.find(c => c.toString().toLowerCase().includes('specific'));
+        if (alt) columnMapping['facilitysfacilitytypes'] = alt;
+      }
+    }
+
+    // Convert a row object to use our expected keys
+    function normalizeRow(row) {
+      const newRow = {};
+      for (const [key, actualCol] of Object.entries(columnMapping)) {
+        if (row.hasOwnProperty(actualCol)) {
+          newRow[key] = row[actualCol];
+        }
+      }
+      // Also keep original columns for display
+      return { ...row, ...newRow };
+    }
+
+    // ===== FILTER POPULATION =====
     function populateDropdown(selectId, key) {
       const select = document.getElementById(selectId);
       if (!select) return;
@@ -398,14 +403,14 @@
       typeSelect.innerHTML = '<option value="">All Types</option>';
       specificTypeSelect.innerHTML = '<option value="">All Specific Types</option>';
 
-      let typesToRender = isPhem ? phemFacilityTypes : [...new Set(rawData.map(item => item.facilityType).filter(Boolean))];
-      let specificTypesToRender = isPhem ? phemSpecificTypes : [...new Set(rawData.map(item => item.facilitysFacilityTypes).filter(Boolean))];
+      let types = isPhem ? phemFacilityTypes : [...new Set(rawData.map(item => item.facilitytype).filter(Boolean))];
+      let specificTypes = isPhem ? phemSpecificTypes : [...new Set(rawData.map(item => item.facilitysfacilitytypes).filter(Boolean))];
 
-      typesToRender.sort().forEach(val => typeSelect.insertAdjacentHTML('beforeend', `<option value="${val}">${val}</option>`));
-      specificTypesToRender.sort().forEach(val => specificTypeSelect.insertAdjacentHTML('beforeend', `<option value="${val}">${val}</option>`));
+      types.sort().forEach(val => typeSelect.insertAdjacentHTML('beforeend', `<option value="${val}">${val}</option>`));
+      specificTypes.sort().forEach(val => specificTypeSelect.insertAdjacentHTML('beforeend', `<option value="${val}">${val}</option>`));
     }
 
-    // Event Listeners
+    // ===== EVENT LISTENERS =====
     function setupEventListeners() {
       ['searchName', 'filterZone', 'filterWoreda', 'filterFacilityType', 'filterSpecificType', 'filterOwnership', 'filterStatus'].forEach(id => {
         const el = document.getElementById(id);
@@ -414,19 +419,16 @@
           el.addEventListener('change', applyFilters);
         }
       });
-
       document.getElementById('resetFilters').addEventListener('click', () => {
         document.querySelectorAll('input[type="text"], select').forEach(el => el.value = '');
         applyFilters();
       });
-
       document.getElementById('strictListToggle').addEventListener('change', (e) => {
         isPhemListActive = e.target.checked;
         const bg = document.getElementById('toggleBg');
         const dot = document.getElementById('toggleDot');
         const labelEntire = document.getElementById('toggleLabelEntire');
         const labelPHEM = document.getElementById('toggleLabelPHEM');
-        
         if (isPhemListActive) {
           bg.classList.replace('bg-slate-400', 'bg-emerald-500');
           dot.classList.add('translate-x-4');
@@ -442,11 +444,9 @@
           labelPHEM.classList.replace('text-white', 'text-white/50');
           labelPHEM.classList.replace('font-bold', 'font-semibold');
         }
-
         updateTypeDropdowns(isPhemListActive);
         applyFilters();
       });
-
       document.getElementById('exportBtn').addEventListener('click', exportToCSV);
       document.getElementById('closeModalBtn').addEventListener('click', closeModal);
       document.getElementById('facilityModalOverlay').addEventListener('click', (e) => {
@@ -456,26 +456,24 @@
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
     }
 
-    // Filter & Render
+    // ===== FILTER & RENDER =====
     function applyFilters() {
       const search = document.getElementById('searchName').value.toLowerCase().trim();
       const filters = {
         zone: document.getElementById('filterZone').value,
         woreda: document.getElementById('filterWoreda').value,
-        facilityType: document.getElementById('filterFacilityType').value,
-        facilitysFacilityTypes: document.getElementById('filterSpecificType').value,
+        facilitytype: document.getElementById('filterFacilityType').value,
+        facilitysfacilitytypes: document.getElementById('filterSpecificType').value,
         ownership: document.getElementById('filterOwnership').value,
-        operationalStatus: document.getElementById('filterStatus').value
+        operationalstatus: document.getElementById('filterStatus').value
       };
 
       currentFilteredData = rawData.filter(row => {
         if (isPhemListActive) {
-          if (!phemFacilityTypes.includes(row.facilityType)) return false;
-          if (!phemSpecificTypes.includes(row.facilitysFacilityTypes)) return false;
+          if (!phemFacilityTypes.includes(row.facilitytype)) return false;
+          if (!phemSpecificTypes.includes(row.facilitysfacilitytypes)) return false;
         }
-
         if (search && !(row.name || '').toLowerCase().includes(search)) return false;
-        
         for (const [key, value] of Object.entries(filters)) {
           if (value && row[key] !== value) return false;
         }
@@ -497,7 +495,6 @@
       const tbody = document.getElementById('tableBody');
       const noData = document.getElementById('noData');
       tbody.innerHTML = '';
-
       if (data.length === 0) {
         noData.classList.remove('hidden');
         return;
@@ -505,7 +502,7 @@
       noData.classList.add('hidden');
 
       data.forEach(row => {
-        const isOp = (row.operationalStatus || '').toLowerCase().includes('operational');
+        const isOp = (row.operationalstatus || '').toLowerCase().includes('operational');
         const badgeClass = isOp ? 'badge-success' : 'badge-error';
         
         const tr = document.createElement('tr');
@@ -518,12 +515,12 @@
               ${row.name ? `<button class="copy-btn opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-blue-600 p-1" title="Copy Name" data-copy="${row.name.replace(/"/g, '&quot;')}"><i class="fas fa-copy"></i></button>` : ''}
             </div>
           </td>
-          <td class="py-3 px-5 text-slate-600 hidden sm:table-cell">${row.facilityType || '-'}</td>
-          <td class="py-3 px-5 text-slate-500 hidden lg:table-cell max-w-[150px] truncate" title="${row.facilitysFacilityTypes || ''}">${row.facilitysFacilityTypes || '-'}</td>
+          <td class="py-3 px-5 text-slate-600 hidden sm:table-cell">${row.facilitytype || '-'}</td>
+          <td class="py-3 px-5 text-slate-500 hidden lg:table-cell max-w-[150px] truncate" title="${row.facilitysfacilitytypes || ''}">${row.facilitysfacilitytypes || '-'}</td>
           <td class="py-3 px-5 text-slate-700 font-medium">${row.zone || '-'}</td>
           <td class="py-3 px-5 text-slate-600 hidden md:table-cell">${row.woreda || '-'}</td>
-          <td class="py-3 px-5"><span class="badge ${badgeClass}">${row.operationalStatus || '-'}</span></td>
-          <td class="py-3 px-5 text-slate-500 hidden lg:table-cell">${formatDate(row.modifiedDate)}</td>
+          <td class="py-3 px-5"><span class="badge ${badgeClass}">${row.operationalstatus || '-'}</span></td>
+          <td class="py-3 px-5 text-slate-500 hidden lg:table-cell">${formatDate(row.modifieddate)}</td>
           <td class="py-3 px-5 bg-blue-50/30">
             <div class="flex flex-col gap-2 w-[220px]">
               <div class="flex gap-2">
@@ -551,12 +548,12 @@
       });
     }
 
-    // Table Click Handler
+    // ===== TABLE CLICK HANDLER =====
     function handleTableClick(e) {
       const copyBtn = e.target.closest('.copy-btn');
       if (copyBtn) {
         navigator.clipboard.writeText(copyBtn.dataset.copy).then(() => {
-          showToast('Copied to clipboard!', 'success');
+          showToast('Copied!', 'success');
           const icon = copyBtn.querySelector('i');
           icon.classList.replace('fa-copy', 'fa-check');
           icon.classList.add('text-green-500');
@@ -580,8 +577,7 @@
         const container = remarkSelect.closest('td');
         const wBox = container.querySelector('.woreda-mismatch-box');
         const rBox = container.querySelector('.rebrand-textbox');
-        wBox.classList.add('hidden');
-        rBox.classList.add('hidden');
+        wBox.classList.add('hidden'); rBox.classList.add('hidden');
         if (remarkSelect.value === 'Woreda Mismatch Issue') wBox.classList.remove('hidden');
         if (remarkSelect.value === 'Rebranded') rBox.classList.remove('hidden');
         return;
@@ -591,32 +587,28 @@
       if (submitBtn) {
         const container = submitBtn.closest('td');
         const remarkVal = container.querySelector('.main-remark-select').value;
-        if (!remarkVal) {
-          showToast('Please select a remark', 'error');
-          return;
-        }
+        if (!remarkVal) { showToast('Please select a remark', 'error'); return; }
         
         let finalRemark = remarkVal;
         if (remarkVal === 'Woreda Mismatch Issue') {
           const woredaVal = container.querySelector('.woreda-mismatch-box').value;
-          if (!woredaVal) { showToast('Please select the correct Woreda', 'error'); return; }
+          if (!woredaVal) { showToast('Select correct Woreda', 'error'); return; }
           finalRemark += ": " + woredaVal;
         }
         if (remarkVal === 'Rebranded') {
           const newName = container.querySelector('.rebrand-textbox').value.trim();
-          if (!newName) { showToast('Please enter the new facility name', 'error'); return; }
+          if (!newName) { showToast('Enter new facility name', 'error'); return; }
           finalRemark += ": " + newName;
         }
 
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-        
         callGoogleScript('logIssue', { name: submitBtn.dataset.name, remark: finalRemark })
           .then(() => {
             submitBtn.innerHTML = '<i class="fas fa-check-double"></i>';
             submitBtn.classList.replace('bg-blue-600', 'bg-green-500');
             showToast('Remark saved!', 'success');
           })
-          .catch((error) => {
+          .catch(err => {
             submitBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
             submitBtn.classList.replace('bg-blue-600', 'bg-red-500');
             showToast('Failed to save remark', 'error');
@@ -628,31 +620,21 @@
       }
     }
 
-    // Modal
+    // ===== MODAL (unchanged) =====
     function openFacilityModal(data) {
       document.getElementById('modalFacilityTitle').innerText = data.name || 'Facility Details';
-      document.getElementById('modalFacilitySubtitle').innerText = `${data.facilityType || 'Facility'} • ${data.operationalStatus || 'Unknown Status'}`;
-      
+      document.getElementById('modalFacilitySubtitle').innerText = `${data.facilitytype || 'Facility'} • ${data.operationalstatus || 'Unknown Status'}`;
       const wrapper = document.getElementById('accordionWrapper');
       wrapper.innerHTML = '';
-
       const sections = [
-        {
-          title: "General Information", icon: "fa-info-circle", color: "text-blue-500",
-          keys: ['name', 'otherName', 'oldName', 'facilityType', 'facilitysFacilityTypes', 'ownership', 'operationalStatus', 'yearOpened']
-        },
-        {
-          title: "Location Details", icon: "fa-map-marker-alt", color: "text-red-500",
-          keys: ['region', 'zone', 'woreda', 'kebele', 'specificAreaName', 'latitude', 'longitude']
-        },
-        {
-          title: "Contact & Identifiers", icon: "fa-address-card", color: "text-emerald-500",
-          keys: ['facilityOwnersName', 'phoneNumber', 'email', 'website', 'hmisCode', 'dhis2Id', 'id', 'rowGuid']
-        }
+        { title: "General Information", icon: "fa-info-circle", color: "text-blue-500",
+          keys: ['name', 'othername', 'oldname', 'facilitytype', 'facilitysfacilitytypes', 'ownership', 'operationalstatus', 'yearopened'] },
+        { title: "Location Details", icon: "fa-map-marker-alt", color: "text-red-500",
+          keys: ['region', 'zone', 'woreda', 'kebele', 'specificareaname', 'latitude', 'longitude'] },
+        { title: "Contact & Identifiers", icon: "fa-address-card", color: "text-emerald-500",
+          keys: ['facilityownersname', 'phonenumber', 'email', 'website', 'hmiscode', 'dhis2id', 'id', 'rowguid'] }
       ];
-
       const displayedKeys = new Set();
-
       sections.forEach((sec, index) => {
         const fieldsHTML = sec.keys.map(key => {
           displayedKeys.add(key);
@@ -664,13 +646,9 @@
             <span class="block text-sm font-semibold text-slate-800 break-words">${value}</span>
           </div>`;
         }).filter(Boolean).join('');
-
-        if (fieldsHTML) {
-          wrapper.insertAdjacentHTML('beforeend', createAccordionSection(index, sec.title, sec.icon, sec.color, fieldsHTML, index === 0));
-        }
+        if (fieldsHTML) wrapper.insertAdjacentHTML('beforeend', createAccordionSection(index, sec.title, sec.icon, sec.color, fieldsHTML, index === 0));
       });
-
-      const otherKeys = Object.keys(data).filter(k => !displayedKeys.has(k) && data[k]);
+      const otherKeys = Object.keys(data).filter(k => !displayedKeys.has(k) && data[k] && !k.startsWith('_'));
       if (otherKeys.length > 0) {
         const otherFieldsHTML = otherKeys.map(key => {
           const label = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
@@ -681,7 +659,6 @@
         }).join('');
         wrapper.insertAdjacentHTML('beforeend', createAccordionSection(99, "Additional Data", "fa-database", "text-purple-500", otherFieldsHTML, false));
       }
-
       document.getElementById('facilityModalOverlay').classList.remove('hidden');
     }
 
@@ -698,8 +675,7 @@
           <div id="content-${index}" class="accordion-content ${isOpen ? 'open' : ''} bg-white border-t border-slate-100">
             <div class="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">${contentHTML}</div>
           </div>
-        </div>
-      `;
+        </div>`;
     }
 
     window.toggleAccordion = function(index) {
@@ -715,56 +691,39 @@
         icon.style.transform = 'rotate(180deg)';
       }
     };
+    function closeModal() { document.getElementById('facilityModalOverlay').classList.add('hidden'); }
 
-    function closeModal() {
-      document.getElementById('facilityModalOverlay').classList.add('hidden');
-    }
-
-    // Export
+    // ===== EXPORT (unchanged) =====
     function exportToCSV() {
-      if (!currentFilteredData.length) {
-        showToast('No data to export', 'error');
-        return;
-      }
-      
-      const exportColumns = ['name', 'facilityType', 'facilitysFacilityTypes', 'zone', 'woreda', 'operationalStatus', 'modifiedDate'];
+      if (!currentFilteredData.length) { showToast('No data to export', 'error'); return; }
+      const exportColumns = ['name', 'facilitytype', 'facilitysfacilitytypes', 'zone', 'woreda', 'operationalstatus', 'modifieddate'];
       const csvRows = [exportColumns.map(col => `"${col}"`).join(",")];
-
       currentFilteredData.forEach(row => {
         const values = exportColumns.map(col => {
           let val = row[col] || '';
-          if (col === 'modifiedDate') val = formatDate(val);
+          if (col === 'modifieddate') val = formatDate(val);
           return `"${String(val).replace(/"/g, '""')}"`;
         });
         csvRows.push(values.join(","));
       });
-
       const blob = new Blob([csvRows.join("\n")], { type: 'text/csv;charset=utf-8;' });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
       link.download = `MFR_Export_${new Date().toISOString().split('T')[0]}.csv`;
       link.click();
-      
       showToast(`Exported ${currentFilteredData.length} records!`, 'success');
     }
 
-    // Toast
+    // ===== TOAST =====
     function showToast(message, type = 'info') {
       const existing = document.querySelector('.toast');
       if (existing) existing.remove();
-      
       const icon = type === 'success' ? 'fa-check-circle text-green-400' : type === 'error' ? 'fa-exclamation-circle text-red-400' : 'fa-info-circle text-blue-400';
-      
       const toast = document.createElement('div');
       toast.className = 'toast fixed bottom-6 right-6 bg-slate-800 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 z-50 text-sm font-medium';
       toast.innerHTML = `<i class="fas ${icon}"></i> ${message}`;
       document.body.appendChild(toast);
-      
-      setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transition = 'opacity 0.3s';
-        setTimeout(() => toast.remove(), 300);
-      }, 3000);
+      setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = 'opacity 0.3s'; setTimeout(() => toast.remove(), 300); }, 3000);
     }
   </script>
 </body>

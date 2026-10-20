@@ -1,3 +1,3 @@
 window.APP_CONFIG = {
-  API_URL: 'PASTE_YOUR_GOOGLE_SCRIPT_URL_HERE'
+  API_URL: 'https://drive.google.com/drive/folders/1v9kpbZLDAbGRF7xdje81W8roB3RgVr21'
 };
